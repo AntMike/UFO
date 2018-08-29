@@ -7,7 +7,8 @@ public class TerrainController : MonoBehaviour {
     {
         if(col.transform.tag == "Asteroid")
         {
-            col.gameObject.SetActive(false);
+            if(col.gameObject.GetComponent<AsteridController>() != null)
+            col.gameObject.GetComponent<AsteridController>().AsteroidDestroy();
         }
     }
 }
