@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
@@ -24,14 +26,22 @@ public class PlayerController : MonoBehaviour
     public float MaxHorizontalSpeed = 15;
     private Vector2 _moveForce;
 
+    [Header("Player HP")]
+    public Image HealthBar;
+    public float MaxHP = 3;
+    private float _healthPoint;
+
     [Space]
-    public float MouseSensitivity = 100;
+    public float MouseSensitivity = 2;
     private float _mouseSensativeX = 0.0f;
     private float _mouseSensativeY = 0.0f;
 
    
-    private void Start()
+    private void Awake()
     {
+
+        _healthPoint = MaxHP;
+
         //disable cursor in play mode
         Cursor.visible = false;
         //set rigidbody abd transform
@@ -60,14 +70,31 @@ public class PlayerController : MonoBehaviour
 
     }
 
+    private void OnCollisionEnter(Collision col)
+    {
+        if(col.transform.tag == "Asteroid")
+        {
+            TakeDamage(1);
+            col.gameObject.GetComponent<AsteridController>().AsteroidDestroy();
+        }
+    }
+
+    public void TakeDamage(float _damage)
+    {
+        _healthPoint -= _damage;
+        HealthBar.fillAmount = (_healthPoint / MaxHP);
+    }
+
+
+
     /// <summary>
     /// Calculate mouse position and rotate player to mouse
     /// </summary>
     private void MovePlayerToMouse()
     {
 
-        _mouseSensativeX += Input.GetAxis("Mouse X") * MouseSensitivity * 0.02f;
-        _mouseSensativeY -= Input.GetAxis("Mouse Y") * MouseSensitivity * 0.02f;
+        _mouseSensativeX += Input.GetAxis("Mouse X") * MouseSensitivity;
+        _mouseSensativeY -= Input.GetAxis("Mouse Y") * MouseSensitivity;
 
         _mouseSensativeY = ClampAngle(_mouseSensativeY);
 
