@@ -17,6 +17,9 @@ public class AsteridController : MonoBehaviour {
         _renderer = GetComponent<MeshRenderer>();
     }
 
+    /// <summary>
+    /// Destroy Asteroid
+    /// </summary>
     public void AsteroidDestroy()
     {
         StartCoroutine(DestroyAsteroid());
@@ -24,17 +27,24 @@ public class AsteridController : MonoBehaviour {
 
     private IEnumerator DestroyAsteroid()
     {
+        //enable particle
         _explosion.Play();
+        //disable collider
         _collider.enabled = false;
         yield return new WaitForSeconds(1.8f);
+        //disable asteroid
         _renderer.enabled = false;
         yield return new WaitForSeconds(0.7f);
+        //disable object and change object to start state
         gameObject.SetActive(false);
         _renderer.enabled = true;
         _collider.enabled = true;
         yield return new WaitForEndOfFrame();
     }
 
+    /// <summary>
+    /// Check collision with player
+    /// </summary>
     private void OnTriggerEnter(Collider col)
     {
         if(col.tag == "Player")

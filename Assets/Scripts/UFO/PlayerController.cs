@@ -66,10 +66,14 @@ public class PlayerController : MonoBehaviour
         ParticleControll();
 
         //player moves
-        transform.Translate(new Vector3(_moveForce.x * Time.deltaTime, 0, _moveForce.y*Time.deltaTime));
+        PlayerMove();
 
     }
 
+
+    /// <summary>
+    /// Check collision with red zone
+    /// </summary>
     private void OnCollisionEnter(Collision col)
     {
         if(col.transform.tag == "Asteroid")
@@ -79,6 +83,9 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Calculate damage
+    /// </summary>
     public void TakeDamage(float _damage)
     {
         _healthPoint -= _damage;
@@ -86,6 +93,13 @@ public class PlayerController : MonoBehaviour
     }
 
 
+    /// <summary>
+    /// Move player
+    /// </summary>
+    private void PlayerMove()
+    {
+        transform.Translate(new Vector3(_moveForce.x * Time.deltaTime, 0, _moveForce.y * Time.deltaTime));
+    }
 
     /// <summary>
     /// Calculate mouse position and rotate player to mouse
