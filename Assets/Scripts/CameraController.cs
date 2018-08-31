@@ -4,43 +4,66 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour {
 
+    public Transform LookAtTarget;
+    public Transform FollowTarget;
 
-    public Transform _lookAt;
-    public Transform _follow;
+    // Dumping speed in units/sec.
+    public float LookSpeed = 1.0F;
+    public float FollowSpeed = 2.0F;
 
 
+    private Quaternion _targetRot;
+    private float _maxLookAtAngle;
+    private float _minLookAtSpeed;
 
-    /// <summary>Get the LookAt target for the Aim component in the CinemachinePipeline.</summary>
-    public Transform LookAt
-    {         
-            get { return _lookAt; }
-            set { _lookAt = value; }
-        
-    }
+    private Transform _cameraTransform;
 
-    /// <summary>Get the Follow target for the Body component in the CinemachinePipeline.</summary>
-    public Transform Follow
+    private int _lookSpeedMultiply = 5;
+
+    private void Awake()
     {
-        get { return _follow; }
-        set { _follow = value; }
-
+        _cameraTransform = GetComponent<Transform>();
     }
 
-    public float smoothSpeed = 0.125f;
-    public Vector3 offset;
+    private void Update()
+    {
+        LookAtControll();
+        FollowControll();
+    }
 
-    // Use this for initialization
-    void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-        Vector3 desiredPosition = _follow.position + offset;
-        Vector3 smoothedPosition = Vector3.Lerp(transform.position, desiredPosition, smoothSpeed);
-        transform.position = smoothedPosition;
+    /// <summary>
+    /// Look at object with lerp
+    /// </summary>
+    private void LookAtControll()
+    {
+        if (LookAtTarget != null)
+        {
+            _targetRot = Quaternion.LookRotation(LookAtTarget.position - _cameraTransform.position);
+            if (Quaternion.Angle(_targetRot, _cameraTransform.rotation) < _maxLookAtAngle)
+            {
+                if (LookSpeed != _minLookAtSpeed)
+                    LookSpeed = _minLookAtSpeed;
+            }
+            else
+            {
+                LookSpeed = (Quaternion.Angle(_targetRot, _cameraTransform.rotation)) / _lookSpeedMultiply;
+            }
 
-        transform.LookAt(_lookAt);
-	}
+            _cameraTransform.rotation = Quaternion.Slerp(_cameraTransform.rotation, _targetRot, LookSpeed * Time.deltaTime);
+        }
+    }
+
+    /// <summary>
+    /// Follow the object with lerp
+    /// </summary>
+    private void FollowControll()
+    {
+        if (FollowTarget != null)
+        {
+            _cameraTransform.position = Vector3.Slerp(_cameraTransform.position, FollowTarget.position, FollowSpeed * Time.deltaTime);
+        }
+    }
+
+
 
 }

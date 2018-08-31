@@ -7,18 +7,22 @@ public abstract class SpawnersBase : MonoBehaviour {
     /// List of pool
     /// </summary>
     public List<GameObject> SpawnObjects;
+
     /// <summary>
     /// Central point to spawn
     /// </summary>
     public Transform SpawnPoint;
+
     // Radius of spawn
     public Vector3 MinRadius;
     public Vector3 MaxRadius;
+
     // Spawn time range
     public float MinTime;
     public float MaxTime;
 
     protected float TimeToSpawn;
+
     //Current spawned object
     protected GameObject SpawnedObject;
 
@@ -26,9 +30,9 @@ public abstract class SpawnersBase : MonoBehaviour {
     /// <summary>
     /// Return random number between min and max
     /// </summary>
-    protected float GiveRandomTime(float _min, float _max)
+    protected float GiveRandomTime(float min, float max)
     {
-        return Random.Range(_min, _max);
+        return Random.Range(min, max);
     }
 
     /// <summary>
@@ -43,6 +47,6 @@ public abstract class SpawnersBase : MonoBehaviour {
     /// <summary>
     /// Enable spawned object
     /// </summary>
-    /// <param name="_object">object to enable</param>
-    public abstract void EnableObject(GameObject _object);
+    /// <param name="objectToSpawn">object to enable</param>
+    public abstract void EnableObject(GameObject objectToSpawn);
 }
