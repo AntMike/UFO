@@ -14,15 +14,32 @@ public class ShootScript : SpawnersBase  {
 
     private void Update()
     {
-        if(_reloading >= 0)
-        _reloading -= Time.deltaTime;
-        if(Input.GetMouseButton(0))
+        CalculateReload();
+        BulletSpawn();
+    }
+
+
+    /// <summary>
+    /// Calculate reload time
+    /// </summary>
+    private void CalculateReload()
+    {
+        if (_reloading >= 0)
+            _reloading -= Time.deltaTime;
+    }
+
+    /// <summary>
+    /// Spawn the bullet when left mouse button is down
+    /// </summary>
+    private void BulletSpawn()
+    {
+        if (Input.GetMouseButton(0))
         {
-            if(_reloading <= 0)
+            if (_reloading <= 0)
             {
-                foreach(GameObject _bullet in SpawnObjects)
+                foreach (GameObject _bullet in SpawnObjects)
                 {
-                    if(!_bullet.activeSelf)
+                    if (!_bullet.activeSelf)
                     {
                         EnableObject(_bullet);
                         _reloading = ReloadTime;

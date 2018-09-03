@@ -56,11 +56,21 @@ public class AsteroidController : MonoBehaviour {
 
     private void Update()
     {
+        DistanceToPlayer();
+    }
+
+
+    private int _maxDistanceToPlayer = 50;
+    /// <summary>
+    /// Check distanse to player and destroy if distance more then max
+    /// </summary>
+    private void DistanceToPlayer()
+    {
         if (tag == "AsteroidFromBelt")
         {
             if (gameObject.activeSelf)
             {
-                if (Vector3.Distance(Player.position, _myTransform.position) > 50)
+                if (Vector3.Distance(Player.position, _myTransform.position) > _maxDistanceToPlayer)
                 {
                     _myHealth.TakeDamage(_myHealth.MaxHP);
                 }

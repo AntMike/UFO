@@ -25,6 +25,14 @@ public class Bullet : MonoBehaviour
 
     private void Update()
     {
+        MoveBullet();
+    }
+
+    /// <summary>
+    /// Check life time of bullet and move or turn off it
+    /// </summary>
+    private void MoveBullet()
+    {
         if (gameObject.activeSelf)
         {
             _timeToLive -= Time.deltaTime;
