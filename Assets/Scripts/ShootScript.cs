@@ -55,7 +55,7 @@ public class ShootScript : SpawnersBase  {
     {
         //set position
         objectToSpawn.transform.position = new Vector3(SpawnPoint.position.x, SpawnPoint.position.y, SpawnPoint.position.z);
-        objectToSpawn.transform.rotation = SpawnPoint.rotation;
+        objectToSpawn.transform.eulerAngles = new Vector3(SpawnPoint.rotation.eulerAngles.x , SpawnPoint.rotation.eulerAngles.y, SpawnPoint.rotation.eulerAngles.z);
         //enable
         objectToSpawn.SetActive(true);
     }

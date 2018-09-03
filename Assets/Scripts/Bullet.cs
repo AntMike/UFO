@@ -45,13 +45,21 @@ public class Bullet : MonoBehaviour
 
     private void OnCollisionEnter(Collision col)
     {
-        if (col.gameObject.tag == "Asteroid" || tag == "AsteroidFromBelt" )
+        if (col.gameObject.tag == "Asteroid" || col.gameObject.tag == "AsteroidFromBelt" )
         {
             col.gameObject.GetComponent<HealthScript>().TakeDamage(_damage);
             gameObject.SetActive(false);
         }
     }
 
+    private void OnTriggerEnter(Collider col)
+    {
+        if (col.gameObject.tag == "Asteroid" || col.gameObject.tag == "AsteroidFromBelt")
+        {
+            col.gameObject.GetComponent<HealthScript>().TakeDamage(_damage);
+            gameObject.SetActive(false);
+        }
+    }
 
     /// <summary>
     /// Move player

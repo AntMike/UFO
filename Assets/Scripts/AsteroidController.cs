@@ -35,11 +35,14 @@ public class AsteroidController : MonoBehaviour {
     private float _waitForEndParticle = 1.8f;
     private IEnumerator DestroyAsteroid()
     {
-        //enable particle
-        _explosion.Play();
 
         //disable collider
         _collider.enabled = false;
+
+        //enable particle
+        _explosion.Play();
+
+
         yield return new WaitForSeconds(_waitForFullParticle);
 
         //disable asteroid
@@ -82,6 +85,15 @@ public class AsteroidController : MonoBehaviour {
     /// Check collision with player
     /// </summary>
     private void OnCollisionEnter(Collision col)
+    {
+        if (col.gameObject.tag == "Player")
+        {
+            col.gameObject.GetComponent<HealthScript>().TakeDamage(Damage);
+            _myHealth.TakeDamage(_myHealth.MaxHP);
+        }
+    }
+
+    private void OnTriggerEnter(Collider col)
     {
         if (col.gameObject.tag == "Player")
         {

@@ -49,7 +49,7 @@ public class HealthScript : MonoBehaviour {
 
                 _healthPoint -= damage;
                 _asteroid.DamageParticle.Play();
-            if (_healthPoint > 1)
+            if (_healthPoint <= 0)
             {
                 _asteroid.AsteroidDestroy();
             }
