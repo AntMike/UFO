@@ -6,10 +6,10 @@ public class Bullet : MonoBehaviour
 {
 
     public float Speed;
+    public int Damage = 1;
     private Transform _bulletTransform;
     private float _timeToLive;
     private float _maxTimeToLive = 2;
-    private int _damage = 1;
 
     private void Awake()
     {
@@ -39,7 +39,10 @@ public class Bullet : MonoBehaviour
             if (_timeToLive > 0)
                 BulletMove();
             else
+            {
                 gameObject.SetActive(false);
+                BulletPool.Instance.SetObjectToPool(gameObject);
+            }
         }
     }
 
@@ -49,8 +52,10 @@ public class Bullet : MonoBehaviour
     {
         if (col.tag == "Asteroid" || col.tag == "AsteroidFromBelt")
         {
-            col.gameObject.GetComponent<HealthScript>().TakeDamage(_damage);
+            col.gameObject.GetComponent<HealthScript>().TakeDamage(Damage);
             gameObject.SetActive(false);
+
+            BulletPool.Instance.SetObjectToPool(gameObject);
         }
     }
 

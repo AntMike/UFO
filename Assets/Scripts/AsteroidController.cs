@@ -25,6 +25,11 @@ public class AsteroidController : ControllerBase
         StartCoroutine(EnableAsteroid());
     }
 
+    private void Update()
+    {
+        DistanceToPlayer();
+    }
+
     /// <summary>
     /// Destroy Asteroid
     /// </summary>
@@ -33,13 +38,18 @@ public class AsteroidController : ControllerBase
         if (!IsDead)
         {
             IsDead = true;
-            UIController.instance.AddScore(1);
+            UIController.Instance.AddScore(1);
             StartCoroutine(DestroyAsteroid());
         }
     }
 
+
     private float _waitForFullParticle = 1.8f;
-    private float _waitForEndParticle = 1.8f;
+    private float _waitForEndParticle = 1.8f;  
+    
+    /// <summary>
+    /// /// Destroy animation
+    /// /// </summary>
     private IEnumerator DestroyAsteroid()
     {
 
@@ -59,15 +69,24 @@ public class AsteroidController : ControllerBase
         //disable object and change object to start state
         gameObject.SetActive(false);
 
+        AsteroidPool.Instance.SetObjectToPool(gameObject);
 
         yield return new WaitForEndOfFrame();
     }
 
     private Vector3 _minScale = new Vector3(0.1f, 0.1f, 0.1f);
+
+    /// <summary>
+    /// Enable animation
+    /// </summary>
+    /// <returns></returns>
     private IEnumerator EnableAsteroid()
     {
+        //enable all components
         _renderer.enabled = true;
         _collider.enabled = true;
+
+        //scale asteroid
         _myTransform.localScale = _minScale;
         while (_myTransform.localScale.x < 1)
         {
@@ -77,14 +96,9 @@ public class AsteroidController : ControllerBase
         yield return new WaitForEndOfFrame();
     }
 
-
-    private void Update()
-    {
-        DistanceToPlayer();
-    }
-
-
+    
     private int _maxDistanceToPlayer = 50;
+
     /// <summary>
     /// Check distanse to player and destroy if distance more then max
     /// </summary>

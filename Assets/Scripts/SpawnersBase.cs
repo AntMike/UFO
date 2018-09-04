@@ -3,10 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class SpawnersBase : MonoBehaviour {
-    /// <summary>
-    /// List of pool
-    /// </summary>
-    public List<GameObject> SpawnObjects;
 
     /// <summary>
     /// Central point to spawn

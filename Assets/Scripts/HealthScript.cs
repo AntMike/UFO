@@ -27,7 +27,7 @@ public class HealthScript : MonoBehaviour {
         _controller.DamageParticle.Play();
         if (tag == "Player")
         {
-            UIController.instance.ShowPlayerHealth(HealthPoint, MaxHP);
+            UIController.Instance.ShowPlayerHealth(HealthPoint, MaxHP);
         }
 
         if (HealthPoint <= 0)

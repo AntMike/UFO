@@ -15,12 +15,12 @@ public class UIController : MonoBehaviour {
     private int _score = 0;
 
 
-    public static UIController instance;
+    public static UIController Instance;
 
     private void Awake()
     {
-        if (instance == null)
-            instance = this;
+        if (Instance == null)
+            Instance = this;
     }
 
     /// <summary>

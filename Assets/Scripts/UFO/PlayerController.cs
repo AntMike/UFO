@@ -75,20 +75,27 @@ public class PlayerController : ControllerBase
             //player moves
             PlayerMove();
 
+            //calculate reload time
             CalculateReload();
 
+            //check if we need to shoot
             CheckShoot();
         }
     }
 
 
 
-
+    /// <summary>
+    /// Calculate reloading
+    /// </summary>
     private void CalculateReload()
     {
         if (_reloading >= 0)
             _reloading -= Time.deltaTime;
     }
+
+
+    private GameObject _currentBullet;
 
     /// <summary>
     /// Spawn the bullet when left mouse button is down
@@ -99,14 +106,11 @@ public class PlayerController : ControllerBase
         {
             if (_reloading <= 0)
             {
-                foreach (GameObject _bullet in _bulletBase.SpawnObjects)
+                _currentBullet = BulletPool.Instance.GetObjectFromPool();
+                if(_currentBullet != null)
                 {
-                    if (!_bullet.activeSelf)
-                    {
-                        _bulletBase.EnableObject(_bullet);
-                        _reloading = ReloadTime;
-                        break;
-                    }
+                    _bulletBase.EnableObject(_currentBullet);
+                    _reloading = ReloadTime;
                 }
             }
         }
@@ -139,13 +143,14 @@ public class PlayerController : ControllerBase
         _myTransform.rotation = rotation;
     }
 
+    private float _clampY = -60;
+    private float _clampZ = 80;
+
     /// <summary>
     /// Keep euler angle between -360 and 360 degree
     /// </summary>
     /// <param name="angle"> Angle that we need to check and fix</param>
     /// <returns>That angle with fix</returns>
-    private float _clampY = -60;
-    private float _clampZ = 80;
     private float ClampAngle(float angle)
     {
         if (angle < -360)
@@ -156,12 +161,13 @@ public class PlayerController : ControllerBase
         return Mathf.Clamp(angle, _clampY, _clampZ);
     }
 
-    /// <summary>
-    /// Calculate vertical movement force
-    /// </summary>
     private float _axisDeadZone = 0.01f;
     private float _maxAxis = 1;
     private float _accelerationDumping = 2;
+
+    /// <summary>
+    /// Calculate vertical movement force
+    /// </summary>
     private void MoveVertical()
     {
         if (Mathf.Abs(_moveForce.y) < MaxVerticalSpeed)
@@ -255,21 +261,23 @@ public class PlayerController : ControllerBase
         UFOChild.localEulerAngles = new Vector3(angV, 0, -angH);
     }
 
+    private float _minRotateSpeed = 2;
+    private float _forceSpeedMultiply = 20;
+
     /// <summary>
     /// Rotating UFO around himself in move and idle
     /// </summary>
-    private float _minRotateSpeed = 2;
-    private float _forceSpeedMultiply = 20;
     private void RotateUFOAroundHimself()
     {
 
         UFOModel.Rotate(0, _minRotateSpeed + Mathf.Abs(_moveForce.y) / _forceSpeedMultiply + Mathf.Abs(_moveForce.x) / _forceSpeedMultiply, 0);
     }
 
+    private float _forceMultiply = 3;
+
     /// <summary>
     /// Set particle speed to UFO speed and turn off then in idle
     /// </summary>
-    private float _forceMultiply = 3;
     private void ParticleControll()
     {
         foreach (ParticleSystem _particle in UFOParticle)
@@ -297,6 +305,6 @@ public class PlayerController : ControllerBase
     {
         IsPlayerDead = true;
         CrashParticle.Play();
-        UIController.instance.PlayerDeath();
+        UIController.Instance.PlayerDeath();
     }
 }

@@ -23,20 +23,13 @@ public class RedZoneSpawner : SpawnersBase {
         TimeToSpawn -= Time.deltaTime;
         if (TimeToSpawn <= 0)
         {
-            //chack if we have objects to spawn
-            if (SpawnObjects.Count > 0)
+            SpawnedObject = RedZonePool.Instance.GetObjectFromPool();
+            if(SpawnedObject != null)
             {
-                //choose random object from list
-                SpawnedObject = SpawnObjects[Random.Range(0, SpawnObjects.Count - 1)];
-                //check if object is active now
-                if (!SpawnedObject.activeSelf)
-                {
-                    ObjectSpawn();
-                }
-            }
-            else
+                ObjectSpawn();
+            } else
             {
-                return;
+                TimeToSpawn = GiveRandomTime(MinTime, MaxTime);
             }
         }
     }

@@ -16,12 +16,6 @@ public class AsteroidSpawner : SpawnersBase {
         _timeToLive = GiveRandomTime(_minLiveTime, _maxLiveTime);
     }
 
-    //Disable all asteroid in the end
-    private void OnDisable()
-    {
-        TurnOffAllAsteroids();
-    }
-
     private void FixedUpdate()
     {
         CalculateAsteroidSpawn();
@@ -40,30 +34,11 @@ public class AsteroidSpawner : SpawnersBase {
         TimeToSpawn -= Time.deltaTime;
         if (TimeToSpawn <= 0 && _timeToLive > 0)
         {
-            //chack if we have objects to spawn
-            if (SpawnObjects.Count > 0)
-            {
-                //choose random object from list
-                SpawnedObject = SpawnObjects[Random.Range(0, SpawnObjects.Count - 1)];
-                //check if object is active now
-                if (!SpawnedObject.activeSelf)
-                {
-                    ObjectSpawn();
-                }
-                else
-                {
-                    //if previous object was activ take first unactive object from list
-                    foreach (GameObject _object in SpawnObjects)
-                    {
-                        if (!_object.activeSelf)
-                        {
-                            SpawnedObject = _object;
-                            ObjectSpawn();
-                            break;
-                        }
-                    }
-                }
 
+            SpawnedObject = AsteroidPool.Instance.GetObjectFromPool();
+            if(SpawnedObject != null)
+            {
+                ObjectSpawn();
             }
         }
     }
@@ -76,17 +51,7 @@ public class AsteroidSpawner : SpawnersBase {
         if (_timeToLive < -_minLiveTime && gameObject.activeSelf)
         {
             gameObject.SetActive(false);
-        }
-    }
-
-    /// <summary>
-    /// Turn off all asteroids from list
-    /// </summary>
-    private void TurnOffAllAsteroids()
-    {
-        foreach (GameObject _object in SpawnObjects)
-        {
-            _object.SetActive(false);
+            RedZonePool.Instance.SetObjectToPool(gameObject);
         }
     }
 
@@ -96,8 +61,9 @@ public class AsteroidSpawner : SpawnersBase {
     /// <param name="objectToEnable">object to enable</param>
     public override void EnableObject(GameObject objectToEnable)
     {
-        //reset velocity
+        //reset rigidbody
         objectToEnable.GetComponent<Rigidbody>().velocity = Vector3.zero;
+        objectToEnable.GetComponent<Rigidbody>().useGravity = !IsAsteroidBelt;
         
         base.EnableObject(objectToEnable);
         
