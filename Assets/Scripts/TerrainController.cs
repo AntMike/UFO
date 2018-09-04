@@ -5,12 +5,12 @@ using UnityEngine;
 public class TerrainController : MonoBehaviour {
 
     //Disable Asteroids when they collision with ground
-    private void OnCollisionEnter(Collision col)
+    private void OnTriggerEnter(Collider col)
     {
         if(col.transform.tag == "Asteroid" )
         {
             if(col.gameObject.GetComponent<AsteroidController>() != null)
-            col.gameObject.GetComponent<AsteroidController>().AsteroidDestroy();
+            col.gameObject.GetComponent<AsteroidController>().DestroyAnimation(false);
         }
     }
 }
