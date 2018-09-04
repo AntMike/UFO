@@ -2,33 +2,40 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AsteroidController : MonoBehaviour {
+public class AsteroidController : ControllerBase
+{
 
+    public ParticleSystem SpawnParticle;
     public float Damage = 1;
-    public ParticleSystem DamageParticle;
-    private ParticleSystem _explosion;
     private CapsuleCollider _collider;
     private MeshRenderer _renderer;
-    private HealthScript _myHealth;
     public Transform Player;
-    private Transform _myTransform;
+    public bool IsDead = false;
 
-
-    private void Awake()
+    private new void Awake()
     {
-        _explosion = GetComponent<ParticleSystem>();
+        base.Awake();
         _collider = GetComponent<CapsuleCollider>();
         _renderer = GetComponent<MeshRenderer>();
-        _myHealth = GetComponent<HealthScript>();
-        _myTransform = GetComponent<Transform>();
+    }
+
+    private void OnEnable()
+    {
+        IsDead = false;
+        StartCoroutine(EnableAsteroid());
     }
 
     /// <summary>
     /// Destroy Asteroid
     /// </summary>
-    public void AsteroidDestroy()
+    public override void DestroyAnimation(bool wasKilledBy)
     {
-        StartCoroutine(DestroyAsteroid());
+        if (!IsDead)
+        {
+            IsDead = true;
+            UIController.instance.AddScore(1);
+            StartCoroutine(DestroyAsteroid());
+        }
     }
 
     private float _waitForFullParticle = 1.8f;
@@ -40,7 +47,7 @@ public class AsteroidController : MonoBehaviour {
         _collider.enabled = false;
 
         //enable particle
-        _explosion.Play();
+        CrashParticle.Play();
 
 
         yield return new WaitForSeconds(_waitForFullParticle);
@@ -51,8 +58,22 @@ public class AsteroidController : MonoBehaviour {
 
         //disable object and change object to start state
         gameObject.SetActive(false);
+
+
+        yield return new WaitForEndOfFrame();
+    }
+
+    private Vector3 _minScale = new Vector3(0.1f, 0.1f, 0.1f);
+    private IEnumerator EnableAsteroid()
+    {
         _renderer.enabled = true;
         _collider.enabled = true;
+        _myTransform.localScale = _minScale;
+        while (_myTransform.localScale.x < 1)
+        {
+            _myTransform.localScale = new Vector3(_myTransform.localScale.x + Time.deltaTime, _myTransform.localScale.y + Time.deltaTime, _myTransform.localScale.z + Time.deltaTime);
+            yield return new WaitForFixedUpdate();
+        }
         yield return new WaitForEndOfFrame();
     }
 
@@ -75,7 +96,7 @@ public class AsteroidController : MonoBehaviour {
             {
                 if (Vector3.Distance(Player.position, _myTransform.position) > _maxDistanceToPlayer)
                 {
-                    _myHealth.TakeDamage(_myHealth.MaxHP);
+                    DestroyAnimation(false);
                 }
             }
         }
@@ -84,15 +105,6 @@ public class AsteroidController : MonoBehaviour {
     /// <summary>
     /// Check collision with player
     /// </summary>
-    private void OnCollisionEnter(Collision col)
-    {
-        if (col.gameObject.tag == "Player")
-        {
-            col.gameObject.GetComponent<HealthScript>().TakeDamage(Damage);
-            _myHealth.TakeDamage(_myHealth.MaxHP);
-        }
-    }
-
     private void OnTriggerEnter(Collider col)
     {
         if (col.gameObject.tag == "Player")

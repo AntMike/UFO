@@ -4,17 +4,15 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : ControllerBase
 {
     [Header("Player Components")]
     public List<ParticleSystem> UFOParticle;
-    public ParticleSystem CrashParticle;
-    public ParticleSystem DamageParticle;
     public Transform UFOChild;
     public Transform UFOModel;
-    private Transform UFOTrans;
     private Rigidbody UFORgbd;
-    private HealthScript _health;
+
+    public bool IsPlayerDead = false;
 
     //angle to tangage UFO
     private float _minTangageAngle = -15;
@@ -30,27 +28,33 @@ public class PlayerController : MonoBehaviour
     private Vector2 _moveForce;
 
     [Space]
-    public UIController UIControll;
     public float MouseSensitivity = 2;
     private float _mouseSensativeX = 0.0f;
     private float _mouseSensativeY = 0.0f;
 
-   
-    private void Awake()
-    {
 
+
+    public float ReloadTime = 0.3f;
+    private float _reloading;
+    private ShootScript _bulletBase;
+
+    private new void Awake()
+    {
+        base.Awake();
         //disable cursor in play mode
         Cursor.visible = false;
-        _health = GetComponent<HealthScript>();
         //set rigidbody abd transform
         UFORgbd = GetComponent<Rigidbody>();
-        UFOTrans = transform;
+        _reloading = ReloadTime;
+        _bulletBase = GetComponent<ShootScript>();
     }
 
     private void Update()
     {
-        if (!_health.IsPlayerDead)
+        if (!IsPlayerDead)
         {
+
+
             //check if we need to falling down
             WaitForIdle();
 
@@ -70,6 +74,41 @@ public class PlayerController : MonoBehaviour
 
             //player moves
             PlayerMove();
+
+            CalculateReload();
+
+            CheckShoot();
+        }
+    }
+
+
+
+
+    private void CalculateReload()
+    {
+        if (_reloading >= 0)
+            _reloading -= Time.deltaTime;
+    }
+
+    /// <summary>
+    /// Spawn the bullet when left mouse button is down
+    /// </summary>
+    private void CheckShoot()
+    {
+        if (Input.GetMouseButton(0))
+        {
+            if (_reloading <= 0)
+            {
+                foreach (GameObject _bullet in _bulletBase.SpawnObjects)
+                {
+                    if (!_bullet.activeSelf)
+                    {
+                        _bulletBase.EnableObject(_bullet);
+                        _reloading = ReloadTime;
+                        break;
+                    }
+                }
+            }
         }
     }
 
@@ -81,7 +120,7 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private void PlayerMove()
     {
-        UFOTrans.Translate(new Vector3(_moveForce.x * Time.deltaTime, 0, _moveForce.y * Time.deltaTime));
+        _myTransform.Translate(new Vector3(_moveForce.x * Time.deltaTime, 0, _moveForce.y * Time.deltaTime));
     }
 
     /// <summary>
@@ -97,7 +136,7 @@ public class PlayerController : MonoBehaviour
 
         // Set rotation
         Quaternion rotation = Quaternion.Euler(_mouseSensativeY, _mouseSensativeX, 0);
-        UFOTrans.rotation = rotation;
+        _myTransform.rotation = rotation;
     }
 
     /// <summary>
@@ -230,13 +269,15 @@ public class PlayerController : MonoBehaviour
     /// <summary>
     /// Set particle speed to UFO speed and turn off then in idle
     /// </summary>
-    private float _forceMultiply;
+    private float _forceMultiply = 3;
     private void ParticleControll()
     {
         foreach (ParticleSystem _particle in UFOParticle)
         {
             if (_moveForce.y > 0)
+            {
                 _particle.startSpeed = _moveForce.y * _forceMultiply;
+            }
             if (_moveForce.y <= 0)
             {
                 _particle.Clear();
@@ -250,5 +291,12 @@ public class PlayerController : MonoBehaviour
                 }
             }
         }
+    }
+
+    public override void DestroyAnimation(bool wasKilledBy)
+    {
+        IsPlayerDead = true;
+        CrashParticle.Play();
+        UIController.instance.PlayerDeath();
     }
 }
