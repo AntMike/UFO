@@ -40,14 +40,4 @@ public class RedZoneSpawner : SpawnersBase {
             }
         }
     }
-
-    /// <summary>
-    /// Enable spawned object
-    /// </summary>
-    /// <param name="objectToEnable">object to enable</param>
-    public override void EnableObject(GameObject objectToEnable)
-    {
-        objectToEnable.transform.position = new Vector3(SpawnPoint.position.x + Random.Range(MinRadius.x, MaxRadius.x), SpawnPoint.position.y, SpawnPoint.position.z + Random.Range(MinRadius.z, MaxRadius.z));
-        objectToEnable.SetActive(true);
-    }
 }

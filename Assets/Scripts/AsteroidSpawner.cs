@@ -96,13 +96,10 @@ public class AsteroidSpawner : SpawnersBase {
     /// <param name="objectToEnable">object to enable</param>
     public override void EnableObject(GameObject objectToEnable)
     {
-        //set position
-        objectToEnable.transform.position = new Vector3(SpawnPoint.position.x + Random.Range(MinRadius.x, MaxRadius.x), SpawnPoint.position.y, SpawnPoint.position.z + Random.Range(MinRadius.z, MaxRadius.z));
-
         //reset velocity
         objectToEnable.GetComponent<Rigidbody>().velocity = Vector3.zero;
-
-        //enable
-        objectToEnable.SetActive(true);
+        
+        base.EnableObject(objectToEnable);
+        
     }
 }

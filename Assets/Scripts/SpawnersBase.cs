@@ -13,6 +13,7 @@ public abstract class SpawnersBase : MonoBehaviour {
     /// </summary>
     public Transform SpawnPoint;
 
+
     // Radius of spawn
     public Vector3 MinRadius;
     public Vector3 MaxRadius;
@@ -48,5 +49,11 @@ public abstract class SpawnersBase : MonoBehaviour {
     /// Enable spawned object
     /// </summary>
     /// <param name="objectToSpawn">object to enable</param>
-    public abstract void EnableObject(GameObject objectToSpawn);
+    public virtual void EnableObject(GameObject objectToEnable)
+    {
+        objectToEnable.transform.position = new Vector3(SpawnPoint.position.x + Random.Range(MinRadius.x, MaxRadius.x), SpawnPoint.position.y + Random.Range(MinRadius.y, MaxRadius.y), SpawnPoint.position.z + Random.Range(MinRadius.z, MaxRadius.z));
+        objectToEnable.SetActive(true);
+    }
+
+
 }
