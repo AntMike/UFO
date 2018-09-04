@@ -10,6 +10,19 @@ public class UIController : MonoBehaviour {
     public Image DeathPanel;
     public Image YouDied;
 
+    [Header("Score")]
+    public Text Score;
+    private int _score = 0;
+
+
+    public static UIController instance;
+
+    private void Awake()
+    {
+        if (instance == null)
+            instance = this;
+    }
+
     /// <summary>
     /// Fill player HP bar
     /// </summary>
@@ -50,5 +63,11 @@ public class UIController : MonoBehaviour {
         yield return new WaitForSeconds(4);
         UnityEngine.SceneManagement.SceneManager.LoadScene("main");
 
+    }
+
+    public void AddScore(int _count)
+    {
+        _score += _count;
+        Score.text = _score.ToString();
     }
 }
