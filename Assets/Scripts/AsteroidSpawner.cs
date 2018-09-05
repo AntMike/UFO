@@ -64,7 +64,8 @@ public class AsteroidSpawner : SpawnersBase {
         //reset rigidbody
         objectToEnable.GetComponent<Rigidbody>().velocity = Vector3.zero;
         objectToEnable.GetComponent<Rigidbody>().useGravity = !IsAsteroidBelt;
-        
+        objectToEnable.GetComponent<AsteroidController>().IsNeedTrackPlayer = IsAsteroidBelt;
+
         base.EnableObject(objectToEnable);
         
     }

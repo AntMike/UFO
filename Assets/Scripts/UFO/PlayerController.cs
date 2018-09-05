@@ -38,6 +38,17 @@ public class PlayerController : ControllerBase
     private float _reloading;
     private ShootScript _bulletBase;
 
+
+    private GameObject _currentBullet;
+    private float _clampY = -60;
+    private float _clampZ = 80;
+    private float _axisDeadZone = 0.01f;
+    private float _maxAxis = 1;
+    private float _accelerationDumping = 2;
+    private float _minRotateSpeed = 2;
+    private float _forceSpeedMultiply = 20;
+    private float _forceMultiply = 3;
+
     private new void Awake()
     {
         base.Awake();
@@ -95,7 +106,6 @@ public class PlayerController : ControllerBase
     }
 
 
-    private GameObject _currentBullet;
 
     /// <summary>
     /// Spawn the bullet when left mouse button is down
@@ -143,8 +153,6 @@ public class PlayerController : ControllerBase
         _myTransform.rotation = rotation;
     }
 
-    private float _clampY = -60;
-    private float _clampZ = 80;
 
     /// <summary>
     /// Keep euler angle between -360 and 360 degree
@@ -161,9 +169,7 @@ public class PlayerController : ControllerBase
         return Mathf.Clamp(angle, _clampY, _clampZ);
     }
 
-    private float _axisDeadZone = 0.01f;
-    private float _maxAxis = 1;
-    private float _accelerationDumping = 2;
+
 
     /// <summary>
     /// Calculate vertical movement force
@@ -261,8 +267,6 @@ public class PlayerController : ControllerBase
         UFOChild.localEulerAngles = new Vector3(angV, 0, -angH);
     }
 
-    private float _minRotateSpeed = 2;
-    private float _forceSpeedMultiply = 20;
 
     /// <summary>
     /// Rotating UFO around himself in move and idle
@@ -273,7 +277,6 @@ public class PlayerController : ControllerBase
         UFOModel.Rotate(0, _minRotateSpeed + Mathf.Abs(_moveForce.y) / _forceSpeedMultiply + Mathf.Abs(_moveForce.x) / _forceSpeedMultiply, 0);
     }
 
-    private float _forceMultiply = 3;
 
     /// <summary>
     /// Set particle speed to UFO speed and turn off then in idle

@@ -4,6 +4,13 @@ using UnityEngine;
 
 public abstract class ControllerBase : MonoBehaviour {
 
+
+    [Header("Player HP")]
+    public float MaxHP = 3;
+    public float HealthPoint;
+
+
+    [Space]
     //particles
     public ParticleSystem CrashParticle;
     public ParticleSystem DamageParticle;
@@ -11,14 +18,32 @@ public abstract class ControllerBase : MonoBehaviour {
 
     //components
     protected Transform _myTransform;
-    protected HealthScript _myHealth;
 
     //get components
     protected void Awake()
     {
-        _myHealth = GetComponent<HealthScript>();
+        HealthPoint = MaxHP;
         _myTransform = GetComponent<Transform>();
     }
+
+    /// <summary>
+    /// Calculate damage
+    /// </summary>
+    public void TakeDamage(float damage)
+    {
+        HealthPoint -= damage;
+        DamageParticle.Play();
+        if (tag == "Player")
+        {
+            UIController.Instance.ShowPlayerHealth(HealthPoint, MaxHP);
+        }
+
+        if (HealthPoint <= 0)
+        {
+            DestroyAnimation(true);
+        }
+    }
+
 
     /// <summary>
     /// Destroy animation 

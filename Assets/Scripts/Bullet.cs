@@ -50,9 +50,9 @@ public class Bullet : MonoBehaviour
 
     private void OnTriggerEnter(Collider col)
     {
-        if (col.tag == "Asteroid" || col.tag == "AsteroidFromBelt")
+        if (col.tag == "Asteroid")
         {
-            col.gameObject.GetComponent<HealthScript>().TakeDamage(Damage);
+            col.gameObject.GetComponent<AsteroidController>().TakeDamage(Damage);
             gameObject.SetActive(false);
 
             BulletPool.Instance.SetObjectToPool(gameObject);

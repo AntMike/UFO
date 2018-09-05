@@ -4,13 +4,19 @@ using UnityEngine;
 
 public class AsteroidController : ControllerBase
 {
-
-    public ParticleSystem SpawnParticle;
+    
     public float Damage = 1;
     private CapsuleCollider _collider;
     private MeshRenderer _renderer;
     public Transform Player;
+    public bool IsNeedTrackPlayer = false;
     public bool IsDead = false;
+
+
+    private float _waitForFullParticle = 1.8f;
+    private float _waitForEndParticle = 1.8f;
+    private Vector3 _minScale = new Vector3(0.1f, 0.1f, 0.1f);
+    private int _maxDistanceToPlayer = 50;
 
     private new void Awake()
     {
@@ -44,9 +50,7 @@ public class AsteroidController : ControllerBase
     }
 
 
-    private float _waitForFullParticle = 1.8f;
-    private float _waitForEndParticle = 1.8f;  
-    
+
     /// <summary>
     /// /// Destroy animation
     /// /// </summary>
@@ -74,7 +78,6 @@ public class AsteroidController : ControllerBase
         yield return new WaitForEndOfFrame();
     }
 
-    private Vector3 _minScale = new Vector3(0.1f, 0.1f, 0.1f);
 
     /// <summary>
     /// Enable animation
@@ -97,14 +100,13 @@ public class AsteroidController : ControllerBase
     }
 
     
-    private int _maxDistanceToPlayer = 50;
 
     /// <summary>
     /// Check distanse to player and destroy if distance more then max
     /// </summary>
     private void DistanceToPlayer()
     {
-        if (tag == "AsteroidFromBelt")
+        if (IsNeedTrackPlayer)
         {
             if (gameObject.activeSelf)
             {
@@ -123,8 +125,8 @@ public class AsteroidController : ControllerBase
     {
         if (col.gameObject.tag == "Player")
         {
-            col.gameObject.GetComponent<HealthScript>().TakeDamage(Damage);
-            _myHealth.TakeDamage(_myHealth.MaxHP);
+            col.gameObject.GetComponent<PlayerController>().TakeDamage(Damage);
+            TakeDamage(MaxHP);
         }
     }
 }
