@@ -1660,7 +1660,6 @@ GameObject:
   - component: {fileID: 164694449}
   - component: {fileID: 164694448}
   - component: {fileID: 164694451}
-  - component: {fileID: 164694452}
   m_Layer: 0
   m_Name: Terrain
   m_TagString: Untagged
@@ -1754,20 +1753,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f0ea57d8a43e2449b5487384bae8c18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!64 &164694452
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 164694447}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Convex: 1
-  m_CookingOptions: 14
-  m_SkinWidth: 0.01
-  m_Mesh: {fileID: 0}
 --- !u!1 &170076733
 GameObject:
   m_ObjectHideFlags: 0
@@ -37023,7 +37008,6 @@ GameObject:
   - component: {fileID: 1949473725}
   - component: {fileID: 1949473724}
   - component: {fileID: 1949473726}
-  - component: {fileID: 1949473727}
   - component: {fileID: 1949473728}
   - component: {fileID: 1949473730}
   - component: {fileID: 1949473731}
@@ -37097,19 +37081,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!65 &1949473727
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 65457951480184946, guid: 1202f174fc5fd154baa37fd5b4ef4cd7,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1949473723}
-  m_Material: {fileID: 13400000, guid: a30b5418589ae2740858486ea9d4a450, type: 2}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 4.3372226, y: 1.341092, z: 4.3372226}
-  m_Center: {x: 0, y: -0.36, z: 0}
 --- !u!65 &1949473728
 BoxCollider:
   m_ObjectHideFlags: 0
