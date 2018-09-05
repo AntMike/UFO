@@ -49,11 +49,12 @@ public class PlayerController : ControllerBase
     private float _forceSpeedMultiply = 20;
     private float _forceMultiply = 3;
 
-    private new void Awake()
+    protected override void Awake()
     {
         base.Awake();
         //disable cursor in play mode
         Cursor.visible = false;
+        Screen.lockCursor = true;
         //set rigidbody abd transform
         UFORgbd = GetComponent<Rigidbody>();
         _reloading = ReloadTime;
