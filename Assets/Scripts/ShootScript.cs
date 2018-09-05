@@ -6,7 +6,7 @@ public class ShootScript : SpawnersBase  {
 
 
     private int _bulletDamage = 1;
-    private float _bulletSpeed = 100;
+    private float _bulletSpeed = 200;
 
     public override void EnableObject(GameObject objectToSpawn)
     {
