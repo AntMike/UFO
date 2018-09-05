@@ -40,7 +40,6 @@ public class Bullet : MonoBehaviour
                 BulletMove();
             else
             {
-                gameObject.SetActive(false);
                 BulletPool.Instance.SetObjectToPool(gameObject);
             }
         }
@@ -53,7 +52,6 @@ public class Bullet : MonoBehaviour
         if (col.tag == "Asteroid")
         {
             col.gameObject.GetComponent<AsteroidController>().TakeDamage(Damage);
-            gameObject.SetActive(false);
 
             BulletPool.Instance.SetObjectToPool(gameObject);
         }

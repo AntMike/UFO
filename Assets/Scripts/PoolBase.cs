@@ -13,6 +13,7 @@ public class PoolBase : MonoBehaviour {
 
     public virtual void SetObjectToPool(GameObject objectToPool)
     {
+        objectToPool.SetActive(false);
         SpawnObjects.Add(objectToPool);
     }
 

@@ -50,7 +50,6 @@ public class AsteroidSpawner : SpawnersBase {
     {
         if (_timeToLive < -_minLiveTime && gameObject.activeSelf)
         {
-            gameObject.SetActive(false);
             RedZonePool.Instance.SetObjectToPool(gameObject);
         }
     }
