@@ -18,7 +18,7 @@ public class AsteroidController : ControllerBase
     private Vector3 _minScale = new Vector3(0.1f, 0.1f, 0.1f);
     private int _maxDistanceToPlayer = 50;
 
-    private new void Awake()
+    protected override void Awake()
     {
         base.Awake();
         _collider = GetComponent<CapsuleCollider>();
@@ -28,6 +28,7 @@ public class AsteroidController : ControllerBase
     private void OnEnable()
     {
         IsDead = false;
+        HealthPoint = MaxHP;
         StartCoroutine(EnableAsteroid());
     }
 
@@ -44,6 +45,7 @@ public class AsteroidController : ControllerBase
         if (!IsDead)
         {
             IsDead = true;
+            if(wasKilledBy)
             UIController.Instance.AddScore(1);
             StartCoroutine(DestroyAsteroid());
         }
@@ -71,8 +73,6 @@ public class AsteroidController : ControllerBase
         yield return new WaitForSeconds(_waitForEndParticle);
 
         //disable object and change object to start state
-        gameObject.SetActive(false);
-
         AsteroidPool.Instance.SetObjectToPool(gameObject);
 
         yield return new WaitForEndOfFrame();
@@ -126,7 +126,7 @@ public class AsteroidController : ControllerBase
         if (col.gameObject.tag == "Player")
         {
             col.gameObject.GetComponent<PlayerController>().TakeDamage(Damage);
-            TakeDamage(MaxHP);
+            this.TakeDamage(MaxHP);
         }
     }
 }
