@@ -15,12 +15,29 @@ public class UIController : MonoBehaviour {
     private int _score = 0;
 
 
+    [Header("Aim")]
+    public Transform AimPoint;
+    public RectTransform Aim;
+
     public static UIController Instance;
 
     private void Awake()
     {
         if (Instance == null)
             Instance = this;
+    }
+
+    private void Update()
+    {
+        PlayerAimController();
+    }
+
+    /// <summary>
+    /// Set aim position
+    /// </summary>
+    private void PlayerAimController()
+    {
+        Aim.position = Camera.main.WorldToScreenPoint(AimPoint.position);
     }
 
     /// <summary>
