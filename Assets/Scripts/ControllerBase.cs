@@ -20,7 +20,7 @@ public abstract class ControllerBase : MonoBehaviour {
     protected Transform _myTransform;
 
     //get components
-    protected void Awake()
+    protected virtual void Awake()
     {
         HealthPoint = MaxHP;
         _myTransform = GetComponent<Transform>();
