@@ -41,10 +41,9 @@ GameObject:
   - component: {fileID: 54395115970485830}
   - component: {fileID: 136840551858298556}
   - component: {fileID: 114197786704338060}
-  - component: {fileID: 114748464817116738}
   m_Layer: 9
   m_Name: Asteroid_05_XXL
-  m_TagString: AsteroidFromBelt
+  m_TagString: Asteroid
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -103,7 +102,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1468983313552692}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 25.945572, y: -1.0055084, z: 66.31275}
+  m_LocalPosition: {x: -430.37396, y: -805.91907, z: 100.42497}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4999335102092230}
@@ -206,24 +205,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5685e5752e9c9db41aa9f89bb5bee40b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CrashParticle: {fileID: 198647287879125614}
-  DamageParticle: {fileID: 198808856972880478}
-  SpawnParticle: {fileID: 198035259246190706}
-  Damage: 1
-  Player: {fileID: 0}
---- !u!114 &114748464817116738
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1468983313552692}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0d5a3123c4288c84683b862019b30c71, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
   MaxHP: 3
   HealthPoint: 0
+  CrashParticle: {fileID: 198647287879125614}
+  DamageParticle: {fileID: 198808856972880478}
+  Damage: 1
+  Player: {fileID: 0}
+  IsNeedTrackPlayer: 0
+  IsDead: 0
 --- !u!136 &136840551858298556
 CapsuleCollider:
   m_ObjectHideFlags: 1
